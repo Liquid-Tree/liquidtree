@@ -1,1 +1,1 @@
-streamlit
+adafruit-circuitpython-dht
