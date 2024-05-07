@@ -1,10 +1,12 @@
 import time
 import board
 import adafruit_dht
+from w1thermsensor import W1ThermSensor
 
 class Sensors:
     def __init__(self):
-        self.dht11 = adafruit_dht.DHT11(board.D14)
+        self.dht11 = adafruit_dht.DHT11(board.D14,use_pulseio=True)
+        self.waterSensor = W1ThermSensor()
     def getSoilTemp(self):
         while True:
             try:
@@ -25,7 +27,11 @@ class Sensors:
                 continue
             except Exception as error:
                 self.dht11.exit()
+    def getWaterTemp(self):
+        return(self.waterSensor.get_temperature())
+
 if __name__ == "__main__":
     app = Sensors()
-    print(app.getSoilTemp())
-    print(app.getSoilHumidity())
+    #print(app.getSoilTemp())
+    #print(app.getSoilHumidity())
+    print(app.getWaterTemp())
