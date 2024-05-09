@@ -1,1 +1,4 @@
 adafruit-circuitpython-dht
+streamlit
+watchdog
+openai
