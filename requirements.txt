@@ -2,3 +2,5 @@ adafruit-circuitpython-dht
 streamlit
 watchdog
 openai
+RPi.GPIO
+w1thermsensor

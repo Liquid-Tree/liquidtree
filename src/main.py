@@ -1,12 +1,22 @@
 import time
+import RPi.GPIO as GPIO
 import board
 import adafruit_dht
+import math
 from w1thermsensor import W1ThermSensor
 
 class Sensors:
+    dht11 = adafruit_dht.DHT11(board.D14,use_pulseio=True)
+    waterSensor = W1ThermSensor()
+    GPIO.setmode(GPIO.BCM)
+    PIN_AIRPUMP = 21
+    PIN_TEMP = 20
+    PIN_FAN = 16
+    GPIO.setup(PIN_AIRPUMP, GPIO.OUT)
+    GPIO.setup(PIN_TEMP, GPIO.OUT)
+    GPIO.setup(PIN_FAN, GPIO.OUT)
     def __init__(self):
-        self.dht11 = adafruit_dht.DHT11(board.D14,use_pulseio=True)
-        self.waterSensor = W1ThermSensor()
+        pass
     def getSoilTemp(self):
         while True:
             try:
@@ -28,10 +38,12 @@ class Sensors:
             except Exception as error:
                 self.dht11.exit()
     def getWaterTemp(self):
-        return(self.waterSensor.get_temperature())
-
+        return(int(self.waterSensor.get_temperature()))
+    def toggleFan(self):
+         GPIO.output(self.PIN_FAN, abs(GPIO.input(self.PIN_FAN)-1))
+    def toggleTemp(self):
+        GPIO.output(self.PIN_TEMP, abs(GPIO.input(self.PIN_TEMP)-1))
+    def toggleAir(self):
+        GPIO.output(self.PIN_AIRPUMP, abs(GPIO.input(self.PIN_AIRPUMP)-1))
 if __name__ == "__main__":
     app = Sensors()
-    #print(app.getSoilTemp())
-    #print(app.getSoilHumidity())
-    print(app.getWaterTemp())
